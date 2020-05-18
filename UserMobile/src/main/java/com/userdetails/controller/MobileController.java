@@ -28,27 +28,43 @@ public class MobileController {
 	@Autowired
 	MobileDao mobdao;
 
-	//@CrossOrigin(origins = "http://localhost:8302")
-		@GetMapping("/{name}")
-		public List<String> getmobileByname(@PathVariable("name") final String name) {
-			List<Integer> userdetails = restTemplate.getForObject("http://localhost:8300/rest/db/" + name, List.class);
-			Integer a = userdetails.get(0);
-			return mobdao.findByUserId(a).stream().map(UserMobileDetails :: getMobile).collect(Collectors.toList());
-		}
-	
-	//@CrossOrigin(origins = "http://localhost:8302")
+	// @CrossOrigin(origins = "http://localhost:8302")
+	@GetMapping("/{name}")
+	public List<String> getmobileByname(@PathVariable("name") final String name) {
+		List<Integer> userdetails = restTemplate.getForObject("http://localhost:8300/rest/db/" + name, List.class);
+		Integer a = userdetails.get(0);
+		return mobdao.findByUserId(a).stream().map(UserMobileDetails::getMobile).collect(Collectors.toList());
+	}
+
+	// @CrossOrigin(origins = "http://localhost:8302")
 	@PostMapping("/addmmobile")
 	public UserMobileDetails addmobileforname(@RequestBody MobileBean bean) {
-		List<Integer> userdetails = restTemplate.getForObject("http://localhost:8300/rest/db/" + bean.getName(),List.class);
+		List<Integer> userdetails = restTemplate.getForObject("http://localhost:8300/rest/db/" + bean.getName(),
+				List.class);
 		Integer a = userdetails.get(0);
-	 	
+
 		UserMobileDetails mob = new UserMobileDetails();
 		mob.setMobile(bean.getMobile());
 		mob.setUserId(a);
-		mob.setType(bean.getType().equalsIgnoreCase("official")?Phonetype.official:Phonetype.personal);
+		mob.setType(bean.getType().equalsIgnoreCase("official") ? Phonetype.official : Phonetype.personal);
 		return mobdao.save(mob);
 	}
 
-	
+	@SuppressWarnings("unchecked")
+	@GetMapping("/send-contact/{name}")
+	public String sendContactDetailsUsingKafka(@PathVariable("name") final String name) {
+		List<Integer> userdetails = restTemplate.getForObject("http://localhost:8300/kafka/rest/db/" + name,List.class);
+		Integer a = userdetails.get(0);
+		String s=restTemplate
+				.getForObject(
+						"http://localhost:8300/kafka/sendingMsgfromOtherService/" + mobdao.findByUserId(a).stream()
+								.map(UserMobileDetails::getMobile).collect(Collectors.toList()).toString(),
+						String.class);
+		if(s.isEmpty()) {
+			return  "contact  delivery failed";
+		}else {
+			return "contact has been delivered";
+		}
+	}
 
 }
