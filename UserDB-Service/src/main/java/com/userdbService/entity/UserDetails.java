@@ -29,12 +29,7 @@ public class UserDetails {
 	private String lastname;
 	@Column(name = "age")
 	private Integer age;
-	
-	/*
-	 * @OneToMany(fetch =
-	 * FetchType.EAGER,mappedBy="userdetailsId",cascade=CascadeType.ALL) private
-	 * List<UserAdressDetails> userAddDetails;
-	 */
+
 	public UserDetails() {
 	}
 
@@ -84,10 +79,4 @@ public class UserDetails {
 				+ ", age=" + age + "]";
 	}
 
-	
-
-	
-	
-
-	
 }

@@ -29,12 +29,12 @@ public class UserController {
 	}
 
 	@GetMapping("/{name}")
-	public List<Integer> findalluserByname(@PathVariable("name") final String name) {
+	public List<Integer> findUserByName(@PathVariable("name") final String name) {
 		return dao.findByname(name).stream().map(UserDetails::getId).collect(Collectors.toList());
 	}
 
 	@GetMapping("/rec/{name}")
-	public List<UserDetails> findFulluserByname(@PathVariable("name") final String name) {
+	public List<UserDetails> findFullRecordOfUserByname(@PathVariable("name") final String name) {
 		return dao.findByname(name);
 	}
 

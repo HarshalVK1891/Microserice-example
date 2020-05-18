@@ -9,8 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
-
 @Entity
 @Table(name = "UserAdressDetails")
 public class UserAdressDetails {
@@ -29,11 +27,6 @@ public class UserAdressDetails {
 	@Column(name="user_id")
 	private Integer userId;
 	
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name="User_Id") private UserDetails userdetailsId;
-	 */
 	public Integer getId() {
 		return id;
 	}
@@ -65,8 +58,6 @@ public class UserAdressDetails {
 	public void setState(String state) {
 		this.state = state;
 	}
-
-	
 
 	public String getPincode() {
 		return pincode;

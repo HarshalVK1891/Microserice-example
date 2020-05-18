@@ -13,6 +13,4 @@ import com.userdbService.entity.UserDetails;
 public interface UsertransactionDao extends GenericDao<UserDetails, Integer>{
 
 	List<UserDetails> findByname(String name);
-
-
 }
